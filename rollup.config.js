@@ -3,15 +3,11 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 import json from 'rollup-plugin-json';
-import serve from 'rollup-plugin-serve'
-import livereload from 'rollup-plugin-livereload'
 
 
 export default [
   // browser-friendly UMD build
   {
-    entry: 'index.js',
-    dest: 'build.js',
     input: 'index.js',
     output: { 
       name: 'genco',
@@ -19,8 +15,6 @@ export default [
       format: 'umd'
     },
     plugins: [
-      serve(),      // index.html should be in root of project
-      livereload(),
       resolve(), // so Rollup can find `ms`
       commonjs({
         namedExports: {
@@ -58,6 +52,7 @@ export default [
   // builds from a single configuration where possible, using
   // an array for the `output` option, where we can specify 
   // `file` and `format` for each target)
+  /*
   {
     input: 'index.js',
     //external: ['escodegen', 'esprima'],
@@ -95,4 +90,5 @@ export default [
       })
     ]
   }
+  */
 ];
