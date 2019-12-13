@@ -1,0 +1,38 @@
+{
+  "name": "build",
+  "version": "0.0.1",
+  "description": "Core 3D content for GENCO website",
+  "main": "dist/build.esm.js",
+  "csj": "dist/build.cjs.js",
+  "module": "dist/build.esm.js",
+  "browser": "dist/build.umd.js",
+  "bundle": "dist/build.bundle.js",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w & python3 -m http.server",
+    "pretest": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "Torin Blankensmith",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "three": "^0.111.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "rollup": "^1.15.6",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
+}
