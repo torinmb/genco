@@ -7,7 +7,7 @@ import { DDSLoader } from 'three/examples/jsm/loaders/DDSLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { PMREMGenerator } from 'three/examples/jsm/pmrem/PMREMGenerator.js';
-
+window.THREE = THREE;
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 let initialCameraZ = 200;
@@ -55,43 +55,74 @@ init();
 animate();
 
 let group;
+
 function init() {
     group = new THREE.Group();
+    window.group = group;
     let geometry = new THREE.IcosahedronBufferGeometry(10, 0);
-    let material = new THREE.MeshStandardMaterial({ color: 0x550000, metalness: 0.2, shading: THREE.FlatShading });
-    material.roughness = 0.3;
+    let material = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.2, shading: THREE.FlatShading });
+    material.roughness = 0.8;
 
     let loader = new GLTFLoader();
     // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    // let dracoLoader = new THREE.DRACOLoader();
-    // dracoLoader.setDecoderPath('/examples/js/libs/draco/');
-    // loader.setDRACOLoader(dracoLoader);
+    let dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('./models/textures');
+    loader.setDRACOLoader(dracoLoader);
 
     // Load a glTF resource
     loader.load('./models/scene.gltf', (gltf) => {
             console.log(gltf.scene);
             scene.add(gltf.scene);
+            let mesh = gltf.scene.children[0];
+            mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+            mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+            mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+            mesh.updateMatrix();
             // gltf.animations; // Array<THREE.AnimationClip>
             // gltf.scene; // THREE.Scene
             // gltf.scenes; // Array<THREE.Scene>
             // gltf.cameras; // Array<THREE.Camera>
             // gltf.asset; // Object
+            
+            for (let i = 0; i < 5000; i++) {
+                // let mesh = new THREE.Mesh(geometry, material);
+                let mesh = gltf.scene.children[0].clone();
+                mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 90) {
+                    mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                    mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                    mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                }
+                mesh.rotation.x = Math.random() * 2 * Math.PI;
+                mesh.rotation.y = Math.random() * 2 * Math.PI;
+                mesh.rotation.z = Math.random() * 2 * Math.PI;
+                mesh.matrixAutoUpdate = false;
+                mesh.updateMatrix();
+                group.add(mesh);
+            }
         },
         (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
         (error) => console.log('An error happened'));    
 
-    for (let i = 0; i < 100; i++) {
-        let mesh = new THREE.Mesh(geometry, material);
-        mesh.position.x = Math.random()*100 * (Math.round(Math.random()) ? -1 : 1);
-        mesh.position.y = Math.random()*100 * (Math.round(Math.random()) ? -1 : 1);
-        mesh.position.z = Math.random()*100 * (Math.round(Math.random()) ? -1 : 1);
-        mesh.rotation.x = Math.random() * 2 * Math.PI;
-        mesh.rotation.y = Math.random() * 2 * Math.PI;
-        mesh.rotation.z = Math.random() * 2 * Math.PI;
-        mesh.matrixAutoUpdate = false;
-        mesh.updateMatrix();
-        group.add(mesh);
-    }
+    // for (let i = 0; i < 500; i++) {
+    //     let mesh = new THREE.Mesh(geometry, material);
+    //     mesh.position.x = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
+    //     mesh.position.y = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
+    //     mesh.position.z = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
+    //     while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 90) {
+    //         mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+    //         mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+    //         mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+    //     }
+    //     mesh.rotation.x = Math.random() * 2 * Math.PI;
+    //     mesh.rotation.y = Math.random() * 2 * Math.PI;
+    //     mesh.rotation.z = Math.random() * 2 * Math.PI;
+    //     mesh.matrixAutoUpdate = false;
+    //     mesh.updateMatrix();
+    //     group.add(mesh);
+    // }
 
     let light = new THREE.AmbientLight({ color: 0xffffff });
     let light2 = new THREE.PointLight({ color: 0x004455 });
@@ -122,6 +153,11 @@ function render() {
     let time = Date.now() * 0.001;
     controls.update();
     camera.lookAt(scene.position);
+    for (let i = 0; i < group.children.length; i++) {
+        group.children[i].rotation.x += 0.01 * Math.random() - 0.01;
+        group.children[i].rotation.y += 0.01 * Math.random() - 0.01;
+        group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
+    }
     renderer.render(scene, camera);
 }
 

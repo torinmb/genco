@@ -34,24 +34,26 @@
     
 
     <div data-w-id="0bc82ccc-2e1e-3dca-8398-a4a32beafb9a" class="section">
-        <div data-w-id="85b695c2-43d1-61c1-b4ad-5c07f129eb57" style="opacity:0" class="container">
-            <h1 data-w-id="f3a52765-66d6-5882-9152-2568fb9e6d6e"
-                style="opacity:0;-webkit-transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)">
-                U.S. college students throw away half a billion plastic toiletry containers <br>every year.</h1>
+        <div data-w-id="85b695c2-43d1-61c1-b4ad-5c07f129eb57"
+            style="opacity:0;-webkit-transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 100PX, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+            class="container">
+            <h1 data-w-id="f3a52765-66d6-5882-9152-2568fb9e6d6e" style="opacity:1">U.S. college students throw away half a
+                billion plastic toiletry containers <br>every year.</h1>
         </div>
     </div>
     <div data-w-id="13d5d6f2-400f-6a3f-0f63-f1ac52b9c184" style="opacity:0" class="section">
         <div class="container"></div>
     </div>
-    <!-- <div class="section">
+    <div class="section">
         <div class="container"></div>
-    </div> -->
+    </div>
     <div data-w-id="bc445807-e05d-be97-da9c-7a4128b028e5" class="section">
         <div class="container"></div>
     </div>
     <div class="section end-intro">
         <div class="container">
-            <h1 class="heading">You already reuse your water bottle. <br>Why not reuse your ____________ bottle?<br></h1>
+            <h1 id="reuse-title" class="heading reuse-title">You already reuse your water bottle. <br>Why not reuse your
+                ____________ bottle?<br></h1>
         </div>
     </div>
     <div data-w-id="9510863e-a0cd-8efc-bc55-0164a8b66088" class="section">
@@ -93,12 +95,26 @@
             </div>
         </div>
     </div>
-    <script src="./dist/build.umd.js"></script>
     <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js" type="text/javascript"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    
     <script src="js/webflow.js" type="text/javascript"></script>
     <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+    <script>
+        let bottleTypes = ['shampoo',
+            'conditioner',
+            'body wash',
+            'toothpaste',
+            'deodorant',
+            'mouthwash'];
+        let index = 0;
+        let reuseTitle = document.getElementById('reuse-title');
+        setInterval(() => {
+            let message = `You already reuse your water bottle. Why not reuse your ${bottleTypes[index]} bottle?`;
+            reuseTitle.innerText = message;
+            index = index === bottleTypes.length - 1 ? 0 : index + 1;
+        }, 2000);
+    </script>
+    <script src="./dist/build.umd.js"></script>
     
 </body>
 

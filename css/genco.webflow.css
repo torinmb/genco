@@ -50,6 +50,10 @@ h1 {
   text-align: left;
 }
 
+.heading.reuse-title {
+  color: #fff;
+}
+
 .form-block {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
