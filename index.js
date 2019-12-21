@@ -11,6 +11,7 @@ import { PMREMGenerator } from 'three/examples/jsm/pmrem/PMREMGenerator.js';
 
 window.THREE = THREE;
 let scene = new THREE.Scene();
+window.scene = scene;
 let sceneRTT = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 let initialCameraZ = 200;
@@ -45,10 +46,29 @@ controls.enableZoom = false;
 
 
 let endOffset = document.querySelector('.end-intro').offsetTop - 500;
-
+let textSelector = null;
+let offsetPosition = .98;
 document.addEventListener('scroll', (e) => {
     // let zoom = controls.getZoomScale();
-    camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 3.2);
+    if(!textSelector) return;
+    let currOffset = (window.pageYOffset / endOffset);
+    if (currOffset > offsetPosition) {
+        group.visible = false;
+        textSelector.material.opacity = 1 - ((100 / (1 - offsetPosition)) * (currOffset - offsetPosition))
+        console.log('textSelector', textSelector.material.opacity)
+            
+    } else {
+        let offset = .4;
+        if (currOffset < offsetPosition) {
+            textSelector.material.opacity = ((100 / (1 - offset)) * (currOffset - offset));
+        }
+        // if (textSelector.material.opacity !== 1) {
+        //     textSelector.material.opacity = 1
+        // }
+        group.visible = true;
+    }
+    camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
+    console.log(scene.children);
 }, false);
 window.controls = controls;
 let mouseX = 0, mouseY = 0;
@@ -62,6 +82,7 @@ let group;
 
 function init() {
     group = new THREE.Group();
+    
     window.group = group;
     let geometry = new THREE.IcosahedronBufferGeometry(10, 0);
     let material = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.2, shading: THREE.FlatShading });
@@ -206,8 +227,17 @@ function createText(text, font) {
     textGeo.computeBoundingBox();
     textGeo.computeVertexNormals();
     textGeo.center();
-    let mat = new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true });
+    let mat = new THREE.MeshPhongMaterial({ color: 0xa1c1dd, flatShading: true, transparent: true });
     let mesh = new THREE.Mesh(textGeo, mat);
+    mesh.name = 'text';
+    textSelector = mesh;
+    // mesh,material.opacity = 0;
+    // if (!textSelector) {
+    //     let text = scene.children.filter(child => child.name === 'text');
+    //     if (text && text.length) {
+    //         textSelector = text[0];
+    //     }
+    // }
     console.log(mesh);
     return mesh;
 }

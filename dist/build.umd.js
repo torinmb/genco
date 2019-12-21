@@ -56252,6 +56252,7 @@
 
 	window.THREE = THREE$1;
 	var scene = new Scene();
+	window.scene = scene;
 	var sceneRTT = new Scene();
 	var camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 	var initialCameraZ = 200;
@@ -56286,9 +56287,32 @@
 	controls.rotateSpeed = 0.5;
 	controls.enableZoom = false;
 	var endOffset = document.querySelector('.end-intro').offsetTop - 500;
+	var textSelector = null;
+	var offsetPosition = .98;
 	document.addEventListener('scroll', function (e) {
 	  // let zoom = controls.getZoomScale();
-	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 3.2);
+	  if (!textSelector) return;
+	  var currOffset = window.pageYOffset / endOffset;
+
+	  if (currOffset > offsetPosition) {
+	    group.visible = false;
+	    textSelector.material.opacity = 1 - 100 / (1 - offsetPosition) * (currOffset - offsetPosition);
+	    console.log('textSelector', textSelector.material.opacity);
+	  } else {
+	    var offset = .4;
+
+	    if (currOffset < offsetPosition) {
+	      textSelector.material.opacity = 100 / (1 - offset) * (currOffset - offset);
+	    } // if (textSelector.material.opacity !== 1) {
+	    //     textSelector.material.opacity = 1
+	    // }
+
+
+	    group.visible = true;
+	  }
+
+	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
+	  console.log(scene.children);
 	}, false);
 	window.controls = controls;
 	var mouseX = 0,
@@ -56452,10 +56476,20 @@
 	  textGeo.computeVertexNormals();
 	  textGeo.center();
 	  var mat = new MeshPhongMaterial({
-	    color: 0xffffff,
-	    flatShading: true
+	    color: 0xa1c1dd,
+	    flatShading: true,
+	    transparent: true
 	  });
 	  var mesh = new Mesh(textGeo, mat);
+	  mesh.name = 'text';
+	  textSelector = mesh; // mesh,material.opacity = 0;
+	  // if (!textSelector) {
+	  //     let text = scene.children.filter(child => child.name === 'text');
+	  //     if (text && text.length) {
+	  //         textSelector = text[0];
+	  //     }
+	  // }
+
 	  console.log(mesh);
 	  return mesh;
 	}
