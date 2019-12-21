@@ -55,7 +55,6 @@ document.addEventListener('scroll', (e) => {
     if (currOffset > offsetPosition) {
         group.visible = false;
         textSelector.material.opacity = 1 - ((100 / (1 - offsetPosition)) * (currOffset - offsetPosition))
-        console.log('textSelector', textSelector.material.opacity)
             
     } else {
         let offset = .4;
@@ -68,7 +67,6 @@ document.addEventListener('scroll', (e) => {
         group.visible = true;
     }
     camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
-    console.log(scene.children);
 }, false);
 window.controls = controls;
 let mouseX = 0, mouseY = 0;
@@ -96,7 +94,6 @@ function init() {
 
     // Load a glTF resource
     loader.load('./models/scene.gltf', (gltf) => {
-            console.log(gltf.scene);
             scene.add(gltf.scene);
             let mesh = gltf.scene.children[0];
             let size = 90;
@@ -109,7 +106,7 @@ function init() {
             // gltf.scenes; // Array<THREE.Scene>
             // gltf.cameras; // Array<THREE.Camera>
             // gltf.asset; // Object
-            let numBottles = 5000;
+            let numBottles = 4000;
             if(window.innerWidth < 500) {
                 count = 1000;
             }
@@ -251,6 +248,5 @@ function createText(text, font) {
     //         textSelector = text[0];
     //     }
     // }
-    console.log(mesh);
     return mesh;
 }

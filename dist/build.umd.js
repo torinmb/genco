@@ -56297,7 +56297,6 @@
 	  if (currOffset > offsetPosition) {
 	    group.visible = false;
 	    textSelector.material.opacity = 1 - 100 / (1 - offsetPosition) * (currOffset - offsetPosition);
-	    console.log('textSelector', textSelector.material.opacity);
 	  } else {
 	    var offset = .4;
 
@@ -56312,7 +56311,6 @@
 	  }
 
 	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
-	  console.log(scene.children);
 	}, false);
 	window.controls = controls;
 	var mouseX = 0,
@@ -56338,7 +56336,6 @@
 	  loader.setDRACOLoader(dracoLoader); // Load a glTF resource
 
 	  loader.load('./models/scene.gltf', function (gltf) {
-	    console.log(gltf.scene);
 	    scene.add(gltf.scene);
 	    var mesh = gltf.scene.children[0];
 	    var size = 90;
@@ -56354,7 +56351,7 @@
 	    // gltf.cameras; // Array<THREE.Camera>
 	    // gltf.asset; // Object
 
-	    var numBottles = 5000;
+	    var numBottles = 4000;
 
 	    if (window.innerWidth < 500) {
 	      count = 1000;
@@ -56508,7 +56505,6 @@
 	  //     }
 	  // }
 
-	  console.log(mesh);
 	  return mesh;
 	}
 
