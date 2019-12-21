@@ -56354,7 +56354,13 @@
 	    // gltf.cameras; // Array<THREE.Camera>
 	    // gltf.asset; // Object
 
-	    for (var i = 0; i < 5000; i++) {
+	    var numBottles = 5000;
+
+	    if (window.innerWidth < 500) {
+	      count = 1000;
+	    }
+
+	    for (var i = 0; i < numBottles; i++) {
 	      // let mesh = new THREE.Mesh(geometry, material);
 	      var _mesh = gltf.scene.children[0].clone();
 
@@ -56408,7 +56414,6 @@
 	  scene.add(light, light2, group);
 	  renderer.sortObjects = false;
 	  createTextMesh('GENCO').then(function (mesh) {
-	    mesh.position.y += 5;
 	    scene.add(mesh);
 	  });
 	}
@@ -56463,9 +56468,15 @@
 	}
 
 	function createText(text, font) {
+	  var size = 28;
+
+	  if (window.innerWidth <= 500) {
+	    size = 10;
+	  }
+
 	  var textGeo = new TextGeometry(text, {
 	    font: font,
-	    size: 28,
+	    size: size,
 	    height: 5,
 	    curveSegments: 15,
 	    bevelThickness: 0.0,
@@ -56481,6 +56492,13 @@
 	    transparent: true
 	  });
 	  var mesh = new Mesh(textGeo, mat);
+	  var textOffset = 5;
+
+	  if (window.innerWidth <= 500) {
+	    textOffset = 2;
+	  }
+
+	  mesh.position.y += textOffset;
 	  mesh.name = 'text';
 	  textSelector = mesh; // mesh,material.opacity = 0;
 	  // if (!textSelector) {

@@ -109,8 +109,11 @@ function init() {
             // gltf.scenes; // Array<THREE.Scene>
             // gltf.cameras; // Array<THREE.Camera>
             // gltf.asset; // Object
-            
-            for (let i = 0; i < 5000; i++) {
+            let numBottles = 5000;
+            if(window.innerWidth < 500) {
+                count = 1000;
+            }
+            for (let i = 0; i < numBottles; i++) {
                 // let mesh = new THREE.Mesh(geometry, material);
                 let mesh = gltf.scene.children[0].clone();
                 mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
@@ -156,7 +159,6 @@ function init() {
     renderer.sortObjects = false;
 
     createTextMesh('GENCO').then(mesh => {
-        mesh.position.y += 5;
         scene.add(mesh);
     })
 }
@@ -215,9 +217,13 @@ function createTextMesh(text) {
 }
 
 function createText(text, font) {
+    let size = 28;
+    if (window.innerWidth <= 500) {
+        size = 10
+    }
     let textGeo = new THREE.TextGeometry(text, {
         font: font,
-        size: 28,
+        size: size,
         height: 5,
         curveSegments: 15,
         bevelThickness: 0.0,
@@ -229,9 +235,16 @@ function createText(text, font) {
     textGeo.center();
     let mat = new THREE.MeshPhongMaterial({ color: 0xa1c1dd, flatShading: true, transparent: true });
     let mesh = new THREE.Mesh(textGeo, mat);
+    
+    
+    let textOffset = 5;
+    if (window.innerWidth <= 500) {
+        textOffset = 2;
+    }
+    mesh.position.y += textOffset;
     mesh.name = 'text';
     textSelector = mesh;
-    mesh,material.opacity = 0;
+    // mesh,material.opacity = 0;
     // if (!textSelector) {
     //     let text = scene.children.filter(child => child.name === 'text');
     //     if (text && text.length) {
