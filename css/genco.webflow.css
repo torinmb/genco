@@ -3,9 +3,10 @@ h1 {
   margin-top: 20px;
   margin-bottom: 10px;
   font-family: 'Inter ui', sans-serif;
-  font-size: 65px;
+  font-size: 58px;
   line-height: 65px;
-  font-weight: 400;
+  font-weight: 700;
+  text-align: center;
 }
 
 .section {
@@ -26,6 +27,9 @@ h1 {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  max-width: 1300px;
+  margin-right: auto;
+  margin-left: auto;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -51,7 +55,7 @@ h1 {
 }
 
 .heading.reuse-title {
-  color: #fff;
+  color: #333;
 }
 
 .form-block {
@@ -91,6 +95,10 @@ h1 {
 .heading-2 {
   max-width: none;
   font-size: 65px;
+}
+
+.left-allign {
+  text-align: left;
 }
 
 @media (max-width: 479px) {
