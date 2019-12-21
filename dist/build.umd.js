@@ -56285,7 +56285,7 @@
 	controls.zoomSpeed = 0.5;
 	controls.rotateSpeed = 0.5;
 	controls.enableZoom = false;
-	var endOffset = document.querySelector('.end-intro').offsetTop - 200;
+	var endOffset = document.querySelector('.end-intro').offsetTop - 500;
 	document.addEventListener('scroll', function (e) {
 	  // let zoom = controls.getZoomScale();
 	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 3.2);

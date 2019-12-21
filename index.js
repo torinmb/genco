@@ -44,7 +44,7 @@ controls.rotateSpeed =  0.5;
 controls.enableZoom = false;
 
 
-let endOffset = document.querySelector('.end-intro').offsetTop - 200;
+let endOffset = document.querySelector('.end-intro').offsetTop - 500;
 
 document.addEventListener('scroll', (e) => {
     // let zoom = controls.getZoomScale();
