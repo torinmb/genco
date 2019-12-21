@@ -7,8 +7,11 @@ import { DDSLoader } from 'three/examples/jsm/loaders/DDSLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { PMREMGenerator } from 'three/examples/jsm/pmrem/PMREMGenerator.js';
+
+
 window.THREE = THREE;
 let scene = new THREE.Scene();
+let sceneRTT = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 let initialCameraZ = 200;
 camera.position.z = initialCameraZ;
@@ -41,18 +44,19 @@ controls.rotateSpeed =  0.5;
 controls.enableZoom = false;
 
 
-let endOffset = document.querySelector('.end-intro').offsetTop;
+let endOffset = document.querySelector('.end-intro').offsetTop - 200;
 
 document.addEventListener('scroll', (e) => {
     // let zoom = controls.getZoomScale();
-    camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 0.01);
+    camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 3.2);
 }, false);
 window.controls = controls;
 let mouseX = 0, mouseY = 0;
 
 
-init();
+init()
 animate();
+
 
 let group;
 
@@ -74,9 +78,10 @@ function init() {
             console.log(gltf.scene);
             scene.add(gltf.scene);
             let mesh = gltf.scene.children[0];
-            mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-            mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-            mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+            let size = 90;
+            mesh.position.x = Math.random() * size - size/2//* (Math.round(Math.random()) ? -1 : 1);
+            mesh.position.y = Math.random() * size - size/2//* (Math.round(Math.random()) ? -1 : 1);
+            mesh.position.z = Math.random() * size - size/2//* (Math.round(Math.random()) ? -1 : 1);
             mesh.updateMatrix();
             // gltf.animations; // Array<THREE.AnimationClip>
             // gltf.scene; // THREE.Scene
@@ -90,7 +95,7 @@ function init() {
                 mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                 mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                 mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 90) {
+                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 80 ) {
                     mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                     mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                     mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
@@ -105,7 +110,7 @@ function init() {
         },
         (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
         (error) => console.log('An error happened'));    
-
+    
     // for (let i = 0; i < 500; i++) {
     //     let mesh = new THREE.Mesh(geometry, material);
     //     mesh.position.x = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
@@ -123,11 +128,16 @@ function init() {
     //     mesh.updateMatrix();
     //     group.add(mesh);
     // }
-
+    
     let light = new THREE.AmbientLight({ color: 0xffffff });
     let light2 = new THREE.PointLight({ color: 0x004455 });
     scene.add(light, light2, group);
     renderer.sortObjects = false;
+
+    createTextMesh('GENCO').then(mesh => {
+        mesh.position.y += 5;
+        scene.add(mesh);
+    })
 }
 
 function lerp(v0, v1, t) {
@@ -166,4 +176,38 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
     // composer.setSize(window.innerWidth, window.innerHeight)
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+
+let font = null;
+function createTextMesh(text) {
+    return new Promise((resolve, reject)=> {
+        if(!font) {
+            let fontLoader = new THREE.FontLoader();
+            fontLoader.load('./fonts/SharpSansNo2Bold_Regular.json', (response) => {
+                console.log('got font', response)
+                font = response;
+                resolve(createText(text, font));
+            });
+        }
+    });
+}
+
+function createText(text, font) {
+    let textGeo = new THREE.TextGeometry(text, {
+        font: font,
+        size: 28,
+        height: 5,
+        curveSegments: 15,
+        bevelThickness: 0.0,
+        bevelSize: 0,
+        bevelEnabled: false
+    });
+    textGeo.computeBoundingBox();
+    textGeo.computeVertexNormals();
+    textGeo.center();
+    let mat = new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true });
+    let mesh = new THREE.Mesh(textGeo, mat);
+    console.log(mesh);
+    return mesh;
 }

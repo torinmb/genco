@@ -56252,6 +56252,7 @@
 
 	window.THREE = THREE$1;
 	var scene = new Scene();
+	var sceneRTT = new Scene();
 	var camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 	var initialCameraZ = 200;
 	camera.position.z = initialCameraZ;
@@ -56284,10 +56285,10 @@
 	controls.zoomSpeed = 0.5;
 	controls.rotateSpeed = 0.5;
 	controls.enableZoom = false;
-	var endOffset = document.querySelector('.end-intro').offsetTop;
+	var endOffset = document.querySelector('.end-intro').offsetTop - 200;
 	document.addEventListener('scroll', function (e) {
 	  // let zoom = controls.getZoomScale();
-	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 0.01);
+	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * (window.pageYOffset / endOffset), 3.2);
 	}, false);
 	window.controls = controls;
 	var mouseX = 0,
@@ -56316,9 +56317,13 @@
 	    console.log(gltf.scene);
 	    scene.add(gltf.scene);
 	    var mesh = gltf.scene.children[0];
-	    mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	    mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	    mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	    var size = 90;
+	    mesh.position.x = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
+
+	    mesh.position.y = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
+
+	    mesh.position.z = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
+
 	    mesh.updateMatrix(); // gltf.animations; // Array<THREE.AnimationClip>
 	    // gltf.scene; // THREE.Scene
 	    // gltf.scenes; // Array<THREE.Scene>
@@ -56333,7 +56338,7 @@
 	      _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 	      _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 
-	      while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 90) {
+	      while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 80) {
 	        _mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 	        _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
@@ -56378,6 +56383,10 @@
 	  });
 	  scene.add(light, light2, group);
 	  renderer.sortObjects = false;
+	  createTextMesh('GENCO').then(function (mesh) {
+	    mesh.position.y += 5;
+	    scene.add(mesh);
+	  });
 	}
 
 	function onDocumentMouseMove(event) {
@@ -56412,6 +56421,43 @@
 	  camera.updateProjectionMatrix(); // composer.setSize(window.innerWidth, window.innerHeight)
 
 	  renderer.setSize(window.innerWidth, window.innerHeight);
+	}
+
+	var font = null;
+
+	function createTextMesh(text) {
+	  return new Promise(function (resolve, reject) {
+	    if (!font) {
+	      var fontLoader = new FontLoader();
+	      fontLoader.load('./fonts/SharpSansNo2Bold_Regular.json', function (response) {
+	        console.log('got font', response);
+	        font = response;
+	        resolve(createText(text, font));
+	      });
+	    }
+	  });
+	}
+
+	function createText(text, font) {
+	  var textGeo = new TextGeometry(text, {
+	    font: font,
+	    size: 28,
+	    height: 5,
+	    curveSegments: 15,
+	    bevelThickness: 0.0,
+	    bevelSize: 0,
+	    bevelEnabled: false
+	  });
+	  textGeo.computeBoundingBox();
+	  textGeo.computeVertexNormals();
+	  textGeo.center();
+	  var mat = new MeshPhongMaterial({
+	    color: 0xffffff,
+	    flatShading: true
+	  });
+	  var mesh = new Mesh(textGeo, mat);
+	  console.log(mesh);
+	  return mesh;
 	}
 
 })));
