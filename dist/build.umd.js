@@ -56497,8 +56497,8 @@
 
 	  mesh.position.y += textOffset;
 	  mesh.name = 'text';
-	  textSelector = mesh; // mesh,material.opacity = 0;
-	  // if (!textSelector) {
+	  textSelector = mesh;
+	  mesh.material.opacity = 0; // if (!textSelector) {
 	  //     let text = scene.children.filter(child => child.name === 'text');
 	  //     if (text && text.length) {
 	  //         textSelector = text[0];

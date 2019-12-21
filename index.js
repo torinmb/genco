@@ -241,7 +241,7 @@ function createText(text, font) {
     mesh.position.y += textOffset;
     mesh.name = 'text';
     textSelector = mesh;
-    // mesh,material.opacity = 0;
+    mesh.material.opacity = 0;
     // if (!textSelector) {
     //     let text = scene.children.filter(child => child.name === 'text');
     //     if (text && text.length) {
