@@ -56302,7 +56302,7 @@
 	    var offset = .4;
 
 	    if (currOffset < offsetPosition) {
-	      textSelector.material.opacity = 100 / (1 - offset) * (currOffset - offset);
+	      textSelector.material.opacity = 100 / ((1 - offset) * 10) * (currOffset - offset);
 	    } // if (textSelector.material.opacity !== 1) {
 	    //     textSelector.material.opacity = 1
 	    // }
