@@ -1,3 +1,15 @@
+.w-layout-grid {
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  -ms-grid-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: auto auto;
+  grid-template-rows: auto auto;
+  grid-row-gap: 16px;
+  grid-column-gap: 16px;
+}
+
 h1 {
   max-width: none;
   margin-top: 20px;
@@ -11,10 +23,19 @@ h1 {
 
 .section {
   position: relative;
+  display: block;
   height: 100vh;
   margin-right: 60px;
   margin-bottom: 100px;
   margin-left: 60px;
+}
+
+.section.rrr-section {
+  display: none;
+}
+
+.section.footer {
+  height: 200px;
 }
 
 .container {
@@ -55,10 +76,12 @@ h1 {
 }
 
 .heading.reuse-title {
-  color: #333;
+  color: #1a2894;
+  text-align: center;
 }
 
 .form-block {
+  margin-top: 20px;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -67,22 +90,24 @@ h1 {
 
 .text-field {
   display: inline-block;
-  width: 68%;
+  width: 100%;
   height: 63px;
-  margin-top: 10px;
+  margin-top: 0px;
   margin-right: 40px;
   padding-bottom: 10px;
   padding-left: 24px;
-  border: 1px solid #cdcdcd;
+  border: 1px none #cdcdcd;
   border-radius: 10px;
-  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.05);
   font-size: 23px;
 }
 
 .submit-button {
   display: inline-block;
+  height: 63px;
   padding: 20px 24px;
   border-radius: 10px;
+  background-color: #d87a00;
 }
 
 .body {
@@ -92,23 +117,115 @@ h1 {
   line-height: 23px;
 }
 
-.heading-2 {
-  max-width: none;
-  font-size: 65px;
-}
-
 .left-allign {
   text-align: left;
 }
 
+.grid {
+  padding-right: 58px;
+  padding-left: 58px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+  grid-template-areas: "textfield signup";
+  -ms-grid-columns: 2.25fr 1fr;
+  grid-template-columns: 2.25fr 1fr;
+  -ms-grid-rows: auto;
+  grid-template-rows: auto;
+}
+
+.mission-h1 {
+  color: #50258c;
+}
+
+.join-h1 {
+  color: #b56908;
+  font-style: normal;
+}
+
+.footer-background {
+  position: absolute;
+  left: -60px;
+  top: 0%;
+  right: -60px;
+  bottom: 0%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.text-span {
+  text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+  h1 {
+    font-size: 30px;
+    line-height: 40px;
+  }
+  .text-field {
+    font-size: 18px;
+  }
+  .submit-button {
+    font-size: 18px;
+  }
+  .grid {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .grid {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
+
 @media (max-width: 479px) {
   h1 {
-    font-size: 26px;
+    font-size: 22px;
     line-height: 26px;
   }
   .section {
     margin-right: 20px;
     margin-left: 20px;
+  }
+  .text-field {
+    height: 40px;
+    padding-top: 1px;
+    padding-bottom: 0px;
+    padding-left: 15px;
+    font-size: 12px;
+  }
+  .submit-button {
+    height: 40px;
+    padding: 0px;
+    font-size: 12px;
+  }
+  .footer-background {
+    left: 20px;
+    right: 20px;
+  }
+}
+
+#email.w-node-1ad7fa660629-0cb4437a {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: textfield;
+}
+
+#w-node-1ad7fa66062d-0cb4437a {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: signup;
+}
+
+@media screen and (max-width: 479px) {
+  #email.w-node-1ad7fa660629-0cb4437a {
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    -ms-grid-row-align: auto;
+    align-self: auto;
   }
 }
 

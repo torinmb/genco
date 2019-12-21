@@ -53,37 +53,36 @@
     <div data-w-id="bc445807-e05d-be97-da9c-7a4128b028e5" class="section end-intro">
         <div class="container"></div>
     </div>
-    <div class="section">
+    <div class="section ">
         <div class="container">
-            <h1 id="reuse-title" class="heading reuse-title">You already reuse your water bottle. <br>Why not reuse your
-                ____________ bottle?<br></h1>
+            <h1 id="reuse-title" class="heading reuse-title">You already reuse your water bottle.<br>Why not reuse your
+                <span class="reuse-item text-span">____________</span> bottle?<br></h1>
         </div>
     </div>
     <div data-w-id="9510863e-a0cd-8efc-bc55-0164a8b66088" class="section">
         <div class="container">
-            <h1>We’re bringing refillable toiletries to colleges across the county.<br></h1>
+            <h1 class="mission-h1">We’re bringing refillable toiletries to colleges across the country.<br></h1>
         </div>
     </div>
-    <div class="section">
-        <div class="container">
-            <h1>Join us in building a sustainable future.<br></h1>
-        </div>
-    </div>
-    <div class="section">
+    <div class="section rrr-section">
         <div class="container">
             <h1 class="left-allign">REDUCE plastic &amp; palm oil.<br>REUSE toiletry containers.<br>REFILL eco-friendly
                 ingredients.<br></h1>
         </div>
     </div>
-    <div class="section">
+    <div data-w-id="53dfb753-a6d5-e647-fe5f-c526fa96a903" class="section">
         <div class="container">
-            <h1>Demand affordable, eco-friendly refills on your campus and in your city.<br></h1>
+            <h1 class="join-h1">Join Generation Conscious in building a sustainable future.</h1>
             <div class="form-block w-form">
                 <form id="email-form" name="email-form" data-name="Email Form"
                     action="https://generationconscious.us4.list-manage.com/subscribe/post?u=7d02086718df0f77ad65701f3&amp;amp;id=68299ac471"
-                    method="post"><input type="email" class="text-field w-input" maxlength="256" name="email"
-                        data-name="email" placeholder="email" id="email" required=""><input type="submit"
-                        value="Join Generation Conscious" data-wait="Please wait..." class="submit-button w-button"></form>
+                    method="post">
+                    <div class="w-layout-grid grid"><input type="email"
+                            class="text-field w-node-1ad7fa660629-0cb4437a w-input" maxlength="256" name="email"
+                            data-name="email" placeholder="email" id="email" required=""><input type="submit"
+                            value="Sign Up" data-wait="Please wait..." id="w-node-1ad7fa66062d-0cb4437a"
+                            class="submit-button w-button"></div>
+                </form>
                 <div class="w-form-done">
                     <div>Thank you! Your submission has been received!</div>
                 </div>
@@ -92,6 +91,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="section footer">
+        <div class="footer-background"></div>
     </div>
     <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js" type="text/javascript"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -105,10 +107,9 @@
             'deodorant',
             'mouthwash'];
         let index = 0;
-        let reuseTitle = document.getElementById('reuse-title');
+        let reuseTitle = document.querySelector('.reuse-item');
         setInterval(() => {
-            let message = `You already reuse your water bottle. Why not reuse your ${bottleTypes[index]} bottle?`;
-            reuseTitle.innerText = message;
+            reuseTitle.innerText = bottleTypes[index];
             index = index === bottleTypes.length - 1 ? 0 : index + 1;
         }, 2000);
     </script>
