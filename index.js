@@ -116,7 +116,7 @@ function loadModels(group) {
             mesh.position.z = Math.random() * size - size / 2//* (Math.round(Math.random()) ? -1 : 1);
             mesh.updateMatrix();
             
-            let numBottles = 200;
+            let numBottles = 400;
             if (window.innerWidth < 500) {
                 numBottles = 200;
             }
@@ -249,10 +249,19 @@ function init() {
     scene.add(light, light2, group);
     renderer.sortObjects = false;
     // 6813 1840
-    var planeGeometry = new THREE.PlaneGeometry(74, 20, 1, 1);
-    var texture = new THREE.TextureLoader().load('./images/logo.png');
-    var planeMaterial = new THREE.MeshLambertMaterial({ map: texture, transparent:true, antialias:true });
-    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    let textOffset = -5;
+    let planeGeometry = new THREE.PlaneGeometry(74, 20, 1, 1);
+    if (window.innerWidth <= 500) {
+        textOffset = -2;
+        planeGeometry = new THREE.PlaneGeometry(32, 10, 1, 1);
+    }
+    console.log('planeGeom', planeGeometry)
+    
+
+    let texture = new THREE.TextureLoader().load('./images/logo.png');
+    let planeMaterial = new THREE.MeshLambertMaterial({ map: texture, transparent:true, antialias:true });
+    let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.position.y += textOffset;
     plane.name = 'text';
     textSelector = plane;
     plane.material.opacity = 0;

@@ -56364,7 +56364,7 @@
 	      mesh.position.z = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
 
 	      mesh.updateMatrix();
-	      var numBottles = 200;
+	      var numBottles = 400;
 
 	      if (window.innerWidth < 500) {
 	        numBottles = 200;
@@ -56508,7 +56508,15 @@
 	  scene.add(light, light2, group);
 	  renderer.sortObjects = false; // 6813 1840
 
+	  var textOffset = -5;
 	  var planeGeometry = new PlaneGeometry(74, 20, 1, 1);
+
+	  if (window.innerWidth <= 500) {
+	    textOffset = -2;
+	    planeGeometry = new PlaneGeometry(32, 10, 1, 1);
+	  }
+
+	  console.log('planeGeom', planeGeometry);
 	  var texture = new TextureLoader().load('./images/logo.png');
 	  var planeMaterial = new MeshLambertMaterial({
 	    map: texture,
@@ -56516,6 +56524,7 @@
 	    antialias: true
 	  });
 	  var plane = new Mesh(planeGeometry, planeMaterial);
+	  plane.position.y += textOffset;
 	  plane.name = 'text';
 	  textSelector = plane;
 	  plane.material.opacity = 0; // plane.visible = false;
