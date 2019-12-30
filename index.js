@@ -13,7 +13,7 @@ window.THREE = THREE;
 let scene = new THREE.Scene();
 window.scene = scene;
 let sceneRTT = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 10, 1000);
 let initialCameraZ = 200;
 camera.position.z = initialCameraZ;
 window.camera = camera;
@@ -54,6 +54,7 @@ document.addEventListener('scroll', (e) => {
     let currOffset = (window.pageYOffset / endOffset);
     if (currOffset > offsetPosition) {
         group.visible = false;
+        meshes.forEach(mesh => mesh.visible = false)
         textSelector.material.opacity = 1 - ((100 / (1 - offsetPosition)) * (currOffset - offsetPosition))
             
     } else {
@@ -64,6 +65,7 @@ document.addEventListener('scroll', (e) => {
         // if (textSelector.material.opacity !== 1) {
         //     textSelector.material.opacity = 1
         // }
+        meshes.forEach(mesh => mesh.visible = true)
         group.visible = true;
     }
     camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
@@ -72,11 +74,105 @@ window.controls = controls;
 let mouseX = 0, mouseY = 0;
 
 
+let group;
+let meshes = [];
+let amount = 100;
+var dummy = new THREE.Object3D();
+
 init()
 animate();
 
 
-let group;
+
+
+function loadGLTF(name) {
+    return new Promise((resolve, reject) => {
+        let loader = new GLTFLoader();
+        let dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath(`./models/${name}/textures`);
+        loader.setDRACOLoader(dracoLoader);
+        loader.load(`./models/${name}/scene.gltf`, (gltf) => resolve(gltf),
+        (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
+        (error) => {
+            console.error('An error happened', error);
+            reject(error);
+        });    
+    });
+}
+
+function loadModels(group) {
+    let promises = [];
+    for(let i = 0; i < 3; i++) {
+        promises.push(loadGLTF(`obj${i}`));
+    }
+    Promise.all(promises).then((data) => {
+        console.log('got resposne', data);
+        data.forEach((gltf, index) => {
+            // scene.add(gltf.scene);
+            let mesh = gltf.scene.children[0];
+            let size = 90;
+            mesh.position.x = Math.random() * size - size / 2//* (Math.round(Math.random()) ? -1 : 1);
+            mesh.position.y = Math.random() * size - size / 2//* (Math.round(Math.random()) ? -1 : 1);
+            mesh.position.z = Math.random() * size - size / 2//* (Math.round(Math.random()) ? -1 : 1);
+            mesh.updateMatrix();
+            
+            let numBottles = 200;
+            if (window.innerWidth < 500) {
+                numBottles = 200;
+            }
+            
+            // console.log('geo', geo);
+            // geo.scale(0.5, 0.5, 0.5);
+            // let material = new THREE.MeshNormalMaterial();
+
+            // let instanceMesh = new THREE.InstancedMesh(geo, material, amount);
+            // meshes.push(instanceMesh);
+            // scene.add(instanceMesh);
+            let obj = gltf.scene.children[0];
+            switch (index) {
+                case 0:
+                    obj.scale.set(3, 3, 3);
+                    break;
+                case 1:
+                    obj.getObjectByName("Collada_visual_scene_group").scale.set(3, 3, 3);
+                    break;
+                case 2:
+                    obj = obj.getObjectByName('deo_body');
+                    break;
+                default:
+                    break;
+            }
+            // if(index === 2) {
+            //     let geo = obj;
+            //     while (geo.type !== 'Mesh' || geo.children.length !== 0) {
+            //         geo = geo.children[0];
+            //     }
+            //     geo = geo.geometry;
+            //     console.log(geo)
+            //     geo.scale(0.01, 0.01, 0.01);
+            //     obj = geo;
+            // }
+            for (let i = 0; i < numBottles; i++) {
+                let mesh = obj.clone();    
+                
+                mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+                // while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 19) {
+                //     mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                //     mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                //     mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                // }
+                mesh.rotation.x = Math.random() * 2 * Math.PI;
+                mesh.rotation.y = Math.random() * 2 * Math.PI;
+                mesh.rotation.z = Math.random() * 2 * Math.PI;
+                mesh.matrixAutoUpdate = false;
+                mesh.updateMatrix();
+                group.add(mesh);
+            }
+        })
+    });
+}
 
 function init() {
     group = new THREE.Group();
@@ -85,14 +181,12 @@ function init() {
     let geometry = new THREE.IcosahedronBufferGeometry(10, 0);
     let material = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.2, shading: THREE.FlatShading });
     material.roughness = 0.8;
-
+    loadModels(group);
+    /*
     let loader = new GLTFLoader();
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
     let dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('./models/textures');
     loader.setDRACOLoader(dracoLoader);
-
-    // Load a glTF resource
     loader.load('./models/scene.gltf', (gltf) => {
             scene.add(gltf.scene);
             let mesh = gltf.scene.children[0];
@@ -108,7 +202,7 @@ function init() {
             // gltf.asset; // Object
             let numBottles = 4000;
             if(window.innerWidth < 500) {
-                count = 1000;
+                numBottles = 1000;
             }
             for (let i = 0; i < numBottles; i++) {
                 // let mesh = new THREE.Mesh(geometry, material);
@@ -131,7 +225,7 @@ function init() {
         },
         (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
         (error) => console.log('An error happened'));    
-    
+    */
     // for (let i = 0; i < 500; i++) {
     //     let mesh = new THREE.Mesh(geometry, material);
     //     mesh.position.x = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
@@ -154,10 +248,28 @@ function init() {
     let light2 = new THREE.PointLight({ color: 0x004455 });
     scene.add(light, light2, group);
     renderer.sortObjects = false;
-
-    createTextMesh('GENCO').then(mesh => {
-        scene.add(mesh);
-    })
+    // 6813 1840
+    var planeGeometry = new THREE.PlaneGeometry(74, 20, 1, 1);
+    var texture = new THREE.TextureLoader().load('./images/logo.png');
+    var planeMaterial = new THREE.MeshLambertMaterial({ map: texture, transparent:true, antialias:true });
+    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.name = 'text';
+    textSelector = plane;
+    plane.material.opacity = 0;
+    // plane.visible = false;
+    // rotate and position the plane
+    // plane.rotation.x = -0.5 * Math.PI;
+    // plane.position.set(0, 0, 0);
+    scene.add(plane);
+    // fetch('./images/logo.png').then(img => {
+    //     // use the image, e.g. draw part of it on a canvas
+    //     var canvas = document.createElement('canvas');
+    //     var context = canvas.getContext('2d');
+    //     context.drawImage(image, 100, 100);
+    // })
+    // createTextMesh('GENCO').then(mesh => {
+    //     scene.add(mesh);
+    // })
 }
 
 function lerp(v0, v1, t) {
@@ -183,12 +295,37 @@ function render() {
     let time = Date.now() * 0.001;
     controls.update();
     camera.lookAt(scene.position);
-    for (let i = 0; i < group.children.length; i++) {
-        group.children[i].rotation.x += 0.01 * Math.random() - 0.01;
-        group.children[i].rotation.y += 0.01 * Math.random() - 0.01;
-        group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
-    }
+    // for (let i = 0; i < group.children.length; i++) {
+    //     group.children[i].rotation.x += 0.01 * Math.random() - 0.01;
+    //     group.children[i].rotation.y += 0.01 * Math.random() - 0.01;
+    //     group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
+    // }
+    // animateMeshes();
     renderer.render(scene, camera);
+}
+
+function animateMeshes() {
+    if(meshes.length) {
+        meshes.forEach(mesh => {
+            let time = Date.now() * 0.001;
+            mesh.rotation.x = Math.sin(time / 4);
+            mesh.rotation.y = Math.sin(time / 2);
+            let i = 0;
+            let offset = (amount - 1) / 2;
+            for (let x = 0; x < amount; x++) {
+                for (let y = 0; y < amount; y++) {
+                    for (let z = 0; z < amount; z++) {
+                        dummy.position.set(offset - x, offset - y, offset - z);
+                        dummy.rotation.y = (Math.sin(x / 4 + time) + Math.sin(y / 4 + time) + Math.sin(z / 4 + time));
+                        dummy.rotation.z = dummy.rotation.y * 2;
+                        dummy.updateMatrix();
+                        mesh.setMatrixAt(i++, dummy.matrix);
+                    }
+                }
+            }
+            mesh.instanceMatrix.needsUpdate = true;
+        })
+    }
 }
 
 function onWindowResize() {

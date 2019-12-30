@@ -56254,7 +56254,7 @@
 	var scene = new Scene();
 	window.scene = scene;
 	var sceneRTT = new Scene();
-	var camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+	var camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 10, 1000);
 	var initialCameraZ = 200;
 	camera.position.z = initialCameraZ;
 	window.camera = camera;
@@ -56296,6 +56296,9 @@
 
 	  if (currOffset > offsetPosition) {
 	    group.visible = false;
+	    meshes.forEach(function (mesh) {
+	      return mesh.visible = false;
+	    });
 	    textSelector.material.opacity = 1 - 100 / (1 - offsetPosition) * (currOffset - offsetPosition);
 	  } else {
 	    var offset = .4;
@@ -56307,6 +56310,9 @@
 	    // }
 
 
+	    meshes.forEach(function (mesh) {
+	      return mesh.visible = true;
+	    });
 	    group.visible = true;
 	  }
 
@@ -56315,9 +56321,110 @@
 	window.controls = controls;
 	var mouseX = 0,
 	    mouseY = 0;
+	var group;
+	var meshes = [];
+	var dummy = new Object3D();
 	init();
 	animate();
-	var group;
+
+	function loadGLTF(name) {
+	  return new Promise(function (resolve, reject) {
+	    var loader = new GLTFLoader();
+	    var dracoLoader = new DRACOLoader();
+	    dracoLoader.setDecoderPath("./models/".concat(name, "/textures"));
+	    loader.setDRACOLoader(dracoLoader);
+	    loader.load("./models/".concat(name, "/scene.gltf"), function (gltf) {
+	      return resolve(gltf);
+	    }, function (xhr) {
+	      return console.log(xhr.loaded / xhr.total * 100 + '% loaded');
+	    }, function (error) {
+	      console.error('An error happened', error);
+	      reject(error);
+	    });
+	  });
+	}
+
+	function loadModels(group) {
+	  var promises = [];
+
+	  for (var i = 0; i < 3; i++) {
+	    promises.push(loadGLTF("obj".concat(i)));
+	  }
+
+	  Promise.all(promises).then(function (data) {
+	    console.log('got resposne', data);
+	    data.forEach(function (gltf, index) {
+	      // scene.add(gltf.scene);
+	      var mesh = gltf.scene.children[0];
+	      var size = 90;
+	      mesh.position.x = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
+
+	      mesh.position.y = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
+
+	      mesh.position.z = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
+
+	      mesh.updateMatrix();
+	      var numBottles = 200;
+
+	      if (window.innerWidth < 500) {
+	        numBottles = 200;
+	      } // console.log('geo', geo);
+	      // geo.scale(0.5, 0.5, 0.5);
+	      // let material = new THREE.MeshNormalMaterial();
+	      // let instanceMesh = new THREE.InstancedMesh(geo, material, amount);
+	      // meshes.push(instanceMesh);
+	      // scene.add(instanceMesh);
+
+
+	      var obj = gltf.scene.children[0];
+
+	      switch (index) {
+	        case 0:
+	          obj.scale.set(3, 3, 3);
+	          break;
+
+	        case 1:
+	          obj.getObjectByName("Collada_visual_scene_group").scale.set(3, 3, 3);
+	          break;
+
+	        case 2:
+	          obj = obj.getObjectByName('deo_body');
+	          break;
+	      } // if(index === 2) {
+	      //     let geo = obj;
+	      //     while (geo.type !== 'Mesh' || geo.children.length !== 0) {
+	      //         geo = geo.children[0];
+	      //     }
+	      //     geo = geo.geometry;
+	      //     console.log(geo)
+	      //     geo.scale(0.01, 0.01, 0.01);
+	      //     obj = geo;
+	      // }
+
+
+	      for (var _i = 0; _i < numBottles; _i++) {
+	        var _mesh = obj.clone();
+
+	        _mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	        _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1); // while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 19) {
+	        //     mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	        //     mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	        //     mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	        // }
+
+	        _mesh.rotation.x = Math.random() * 2 * Math.PI;
+	        _mesh.rotation.y = Math.random() * 2 * Math.PI;
+	        _mesh.rotation.z = Math.random() * 2 * Math.PI;
+	        _mesh.matrixAutoUpdate = false;
+
+	        _mesh.updateMatrix();
+
+	        group.add(_mesh);
+	      }
+	    });
+	  });
+	}
 
 	function init() {
 	  group = new Group();
@@ -56329,62 +56436,52 @@
 	    shading: FlatShading
 	  });
 	  material.roughness = 0.8;
-	  var loader = new GLTFLoader(); // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-
-	  var dracoLoader = new DRACOLoader();
+	  loadModels(group);
+	  /*
+	  let loader = new GLTFLoader();
+	  let dracoLoader = new DRACOLoader();
 	  dracoLoader.setDecoderPath('./models/textures');
-	  loader.setDRACOLoader(dracoLoader); // Load a glTF resource
-
-	  loader.load('./models/scene.gltf', function (gltf) {
-	    scene.add(gltf.scene);
-	    var mesh = gltf.scene.children[0];
-	    var size = 90;
-	    mesh.position.x = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
-
-	    mesh.position.y = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
-
-	    mesh.position.z = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
-
-	    mesh.updateMatrix(); // gltf.animations; // Array<THREE.AnimationClip>
-	    // gltf.scene; // THREE.Scene
-	    // gltf.scenes; // Array<THREE.Scene>
-	    // gltf.cameras; // Array<THREE.Camera>
-	    // gltf.asset; // Object
-
-	    var numBottles = 4000;
-
-	    if (window.innerWidth < 500) {
-	      count = 1000;
-	    }
-
-	    for (var i = 0; i < numBottles; i++) {
-	      // let mesh = new THREE.Mesh(geometry, material);
-	      var _mesh = gltf.scene.children[0].clone();
-
-	      _mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	      _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	      _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-
-	      while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 80) {
-	        _mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	        _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	      }
-
-	      _mesh.rotation.x = Math.random() * 2 * Math.PI;
-	      _mesh.rotation.y = Math.random() * 2 * Math.PI;
-	      _mesh.rotation.z = Math.random() * 2 * Math.PI;
-	      _mesh.matrixAutoUpdate = false;
-
-	      _mesh.updateMatrix();
-
-	      group.add(_mesh);
-	    }
-	  }, function (xhr) {
-	    return console.log(xhr.loaded / xhr.total * 100 + '% loaded');
-	  }, function (error) {
-	    return console.log('An error happened');
-	  }); // for (let i = 0; i < 500; i++) {
+	  loader.setDRACOLoader(dracoLoader);
+	  loader.load('./models/scene.gltf', (gltf) => {
+	          scene.add(gltf.scene);
+	          let mesh = gltf.scene.children[0];
+	          let size = 90;
+	          mesh.position.x = Math.random() * size - size/2//* (Math.round(Math.random()) ? -1 : 1);
+	          mesh.position.y = Math.random() * size - size/2//* (Math.round(Math.random()) ? -1 : 1);
+	          mesh.position.z = Math.random() * size - size/2//* (Math.round(Math.random()) ? -1 : 1);
+	          mesh.updateMatrix();
+	          // gltf.animations; // Array<THREE.AnimationClip>
+	          // gltf.scene; // THREE.Scene
+	          // gltf.scenes; // Array<THREE.Scene>
+	          // gltf.cameras; // Array<THREE.Camera>
+	          // gltf.asset; // Object
+	          let numBottles = 4000;
+	          if(window.innerWidth < 500) {
+	              numBottles = 1000;
+	          }
+	          for (let i = 0; i < numBottles; i++) {
+	              // let mesh = new THREE.Mesh(geometry, material);
+	              let mesh = gltf.scene.children[0].clone();
+	              mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	              mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	              mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	              while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 80 ) {
+	                  mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	                  mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	                  mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	              }
+	              mesh.rotation.x = Math.random() * 2 * Math.PI;
+	              mesh.rotation.y = Math.random() * 2 * Math.PI;
+	              mesh.rotation.z = Math.random() * 2 * Math.PI;
+	              mesh.matrixAutoUpdate = false;
+	              mesh.updateMatrix();
+	              group.add(mesh);
+	          }
+	      },
+	      (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
+	      (error) => console.log('An error happened'));    
+	  */
+	  // for (let i = 0; i < 500; i++) {
 	  //     let mesh = new THREE.Mesh(geometry, material);
 	  //     mesh.position.x = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
 	  //     mesh.position.y = Math.random()*90 * (Math.round(Math.random()) ? -1 : 1);
@@ -56409,10 +56506,32 @@
 	    color: 0x004455
 	  });
 	  scene.add(light, light2, group);
-	  renderer.sortObjects = false;
-	  createTextMesh('GENCO').then(function (mesh) {
-	    scene.add(mesh);
+	  renderer.sortObjects = false; // 6813 1840
+
+	  var planeGeometry = new PlaneGeometry(74, 20, 1, 1);
+	  var texture = new TextureLoader().load('./images/logo.png');
+	  var planeMaterial = new MeshLambertMaterial({
+	    map: texture,
+	    transparent: true,
+	    antialias: true
 	  });
+	  var plane = new Mesh(planeGeometry, planeMaterial);
+	  plane.name = 'text';
+	  textSelector = plane;
+	  plane.material.opacity = 0; // plane.visible = false;
+	  // rotate and position the plane
+	  // plane.rotation.x = -0.5 * Math.PI;
+	  // plane.position.set(0, 0, 0);
+
+	  scene.add(plane); // fetch('./images/logo.png').then(img => {
+	  //     // use the image, e.g. draw part of it on a canvas
+	  //     var canvas = document.createElement('canvas');
+	  //     var context = canvas.getContext('2d');
+	  //     context.drawImage(image, 100, 100);
+	  // })
+	  // createTextMesh('GENCO').then(mesh => {
+	  //     scene.add(mesh);
+	  // })
 	}
 
 	function onDocumentMouseMove(event) {
@@ -56431,13 +56550,12 @@
 
 	function render() {
 	  controls.update();
-	  camera.lookAt(scene.position);
-
-	  for (var i = 0; i < group.children.length; i++) {
-	    group.children[i].rotation.x += 0.01 * Math.random() - 0.01;
-	    group.children[i].rotation.y += 0.01 * Math.random() - 0.01;
-	    group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
-	  }
+	  camera.lookAt(scene.position); // for (let i = 0; i < group.children.length; i++) {
+	  //     group.children[i].rotation.x += 0.01 * Math.random() - 0.01;
+	  //     group.children[i].rotation.y += 0.01 * Math.random() - 0.01;
+	  //     group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
+	  // }
+	  // animateMeshes();
 
 	  renderer.render(scene, camera);
 	}
@@ -56447,65 +56565,6 @@
 	  camera.updateProjectionMatrix(); // composer.setSize(window.innerWidth, window.innerHeight)
 
 	  renderer.setSize(window.innerWidth, window.innerHeight);
-	}
-
-	var font = null;
-
-	function createTextMesh(text) {
-	  return new Promise(function (resolve, reject) {
-	    if (!font) {
-	      var fontLoader = new FontLoader();
-	      fontLoader.load('./fonts/SharpSansNo2Bold_Regular.json', function (response) {
-	        console.log('got font', response);
-	        font = response;
-	        resolve(createText(text, font));
-	      });
-	    }
-	  });
-	}
-
-	function createText(text, font) {
-	  var size = 28;
-
-	  if (window.innerWidth <= 500) {
-	    size = 10;
-	  }
-
-	  var textGeo = new TextGeometry(text, {
-	    font: font,
-	    size: size,
-	    height: 5,
-	    curveSegments: 15,
-	    bevelThickness: 0.0,
-	    bevelSize: 0,
-	    bevelEnabled: false
-	  });
-	  textGeo.computeBoundingBox();
-	  textGeo.computeVertexNormals();
-	  textGeo.center();
-	  var mat = new MeshPhongMaterial({
-	    color: 0xa1c1dd,
-	    flatShading: true,
-	    transparent: true
-	  });
-	  var mesh = new Mesh(textGeo, mat);
-	  var textOffset = 5;
-
-	  if (window.innerWidth <= 500) {
-	    textOffset = 2;
-	  }
-
-	  mesh.position.y += textOffset;
-	  mesh.name = 'text';
-	  textSelector = mesh;
-	  mesh.material.opacity = 0; // if (!textSelector) {
-	  //     let text = scene.children.filter(child => child.name === 'text');
-	  //     if (text && text.length) {
-	  //         textSelector = text[0];
-	  //     }
-	  // }
-
-	  return mesh;
 	}
 
 })));
