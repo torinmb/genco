@@ -26,6 +26,9 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.addEventListener('mousemove', onDocumentMouseMove, false);
+document.addEventListener('touchstart', onTouchStart, false);
+// document.addEventListener('touchend', onTouchEnd, false);
+document.addEventListener('touchmove', onTouchMove, false);
 window.addEventListener('resize', onWindowResize, false);
 
 // renderer.domElement.addEventListener('mousedown', this.onMouseDown, false);
@@ -284,6 +287,17 @@ function init() {
 function lerp(v0, v1, t) {
     return v0 * (1 - t) + v1 * t
 }
+
+function onTouchStart(event) {
+    mouseX = 0.5 * (event.touches[0].pageX + event.touches[1].pageX);
+    mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
+}
+
+function onTouchMove(event) {
+    mouseX = 0.5 * (event.touches[0].pageX + event.touches[1].pageX);
+    mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
+}
+
 
 function onDocumentMouseMove(event) {
     mouseX = (event.clientX) / window.innerWidth;

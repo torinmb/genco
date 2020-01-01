@@ -56271,6 +56271,9 @@
 	renderer.setSize(container.clientWidth, container.clientHeight);
 	renderer.setPixelRatio(window.devicePixelRatio);
 	document.addEventListener('mousemove', onDocumentMouseMove, false);
+	document.addEventListener('touchstart', onTouchStart, false); // document.addEventListener('touchend', onTouchEnd, false);
+
+	document.addEventListener('touchmove', onTouchMove, false);
 	window.addEventListener('resize', onWindowResize, false); // renderer.domElement.addEventListener('mousedown', this.onMouseDown, false);
 	// renderer.domElement.addEventListener('mouseup', this.onMouseUp, false);
 	// renderer.domElement.addEventListener('mousemove', this.onDocumentMouseMove, false);
@@ -56541,6 +56544,16 @@
 	  // createTextMesh('GENCO').then(mesh => {
 	  //     scene.add(mesh);
 	  // })
+	}
+
+	function onTouchStart(event) {
+	  mouseX = 0.5 * (event.touches[0].pageX + event.touches[1].pageX);
+	  mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
+	}
+
+	function onTouchMove(event) {
+	  mouseX = 0.5 * (event.touches[0].pageX + event.touches[1].pageX);
+	  mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
 	}
 
 	function onDocumentMouseMove(event) {
