@@ -285,6 +285,17 @@ a {
   background-repeat: no-repeat;
 }
 
+.image-3 {
+  position: absolute;
+  left: 50%;
+  top: auto;
+  right: 0%;
+  bottom: 100px;
+  -webkit-transform: translate(-50%, 0px);
+  -ms-transform: translate(-50%, 0px);
+  transform: translate(-50%, 0px);
+}
+
 @media (max-width: 991px) {
   h1 {
     font-size: 30px;
