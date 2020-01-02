@@ -56291,7 +56291,7 @@
 	controls.enableZoom = false;
 	var endOffset = document.querySelector('.end-intro').offsetTop - 500;
 	var textSelector = null;
-	var offsetPosition = .98;
+	var offsetPosition = .95;
 	document.addEventListener('scroll', function (e) {
 	  // let zoom = controls.getZoomScale();
 	  if (!textSelector) return;

@@ -50,7 +50,7 @@ controls.enableZoom = false;
 
 let endOffset = document.querySelector('.end-intro').offsetTop - 500;
 let textSelector = null;
-let offsetPosition = .98;
+let offsetPosition = .95;
 document.addEventListener('scroll', (e) => {
     // let zoom = controls.getZoomScale();
     if(!textSelector) return;
