@@ -119,7 +119,7 @@ function loadModels(group) {
             mesh.position.z = Math.random() * size - size / 2//* (Math.round(Math.random()) ? -1 : 1);
             mesh.updateMatrix();
             
-            let numBottles = 200;
+            let numBottles = 250;
             if (window.innerWidth < 500) {
                 numBottles = 100;
             }
@@ -134,14 +134,14 @@ function loadModels(group) {
             let obj = gltf.scene.children[0];
             switch (index) {
                 case 0:
-                    obj.scale.set(5, 5, 5);
+                    obj.scale.set(6, 6, 6);
                     break;
                 case 1:
-                    obj.getObjectByName("Collada_visual_scene_group").scale.set(5, 5, 5);
+                    obj.getObjectByName("Collada_visual_scene_group").scale.set(6, 6, 6);
                     break;
                 case 2:
                     obj = obj.getObjectByName('deo_body');
-                    obj.scale.set(2, 2, 2);;
+                    obj.scale.set(3, 3, 3);;
                     break;
                 default:
                     break;
@@ -159,13 +159,13 @@ function loadModels(group) {
             for (let i = 0; i < numBottles; i++) {
                 let mesh = obj.clone();    
                 
-                mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-                mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-                mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 34) {
-                    mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-                    mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-                    mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.x = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.y = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+                mesh.position.z = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 45) {
+                    mesh.position.x = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+                    mesh.position.y = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+                    mesh.position.z = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
                 }
                 mesh.rotation.x = Math.random() * 2 * Math.PI;
                 mesh.rotation.y = Math.random() * 2 * Math.PI;
@@ -334,6 +334,11 @@ function render() {
     //     group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
     // }
     // animateMeshes();
+    // group.children.forEach(child => {
+    //     child.rotateX( Math.sin(time / 4));
+    //     child.rotateY(Math.sin(time / 2));
+    //     child.matrixWorldNeedsUpdate = true;
+    // })
     renderer.render(scene, camera);
 }
 

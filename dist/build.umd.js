@@ -56367,7 +56367,7 @@
 	      mesh.position.z = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
 
 	      mesh.updateMatrix();
-	      var numBottles = 200;
+	      var numBottles = 250;
 
 	      if (window.innerWidth < 500) {
 	        numBottles = 100;
@@ -56383,16 +56383,16 @@
 
 	      switch (index) {
 	        case 0:
-	          obj.scale.set(5, 5, 5);
+	          obj.scale.set(6, 6, 6);
 	          break;
 
 	        case 1:
-	          obj.getObjectByName("Collada_visual_scene_group").scale.set(5, 5, 5);
+	          obj.getObjectByName("Collada_visual_scene_group").scale.set(6, 6, 6);
 	          break;
 
 	        case 2:
 	          obj = obj.getObjectByName('deo_body');
-	          obj.scale.set(2, 2, 2);
+	          obj.scale.set(3, 3, 3);
 	          break;
 	      } // if(index === 2) {
 	      //     let geo = obj;
@@ -56409,14 +56409,14 @@
 	      for (var _i = 0; _i < numBottles; _i++) {
 	        var _mesh = obj.clone();
 
-	        _mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	        _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+	        _mesh.position.x = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+	        _mesh.position.y = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+	        _mesh.position.z = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
 
-	        while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 34) {
-	          _mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-	          _mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-	          _mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	        while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 45) {
+	          _mesh.position.x = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+	          _mesh.position.y = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
+	          _mesh.position.z = Math.random() * 120 * (Math.round(Math.random()) ? -1 : 1);
 	        }
 
 	        _mesh.rotation.x = Math.random() * 2 * Math.PI;
@@ -56590,6 +56590,11 @@
 	  //     group.children[i].rotation.z += 0.01 * Math.random() - 0.01;
 	  // }
 	  // animateMeshes();
+	  // group.children.forEach(child => {
+	  //     child.rotateX( Math.sin(time / 4));
+	  //     child.rotateY(Math.sin(time / 2));
+	  //     child.matrixWorldNeedsUpdate = true;
+	  // })
 
 	  renderer.render(scene, camera);
 	}
