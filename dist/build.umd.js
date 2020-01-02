@@ -56354,7 +56354,7 @@
 	    promises.push(loadGLTF("obj".concat(i)));
 	  }
 
-	  Promise.all(promises).then(function (data) {
+	  return Promise.all(promises).then(function (data) {
 	    console.log('got resposne', data);
 	    data.forEach(function (gltf, index) {
 	      // scene.add(gltf.scene);
@@ -56383,15 +56383,16 @@
 
 	      switch (index) {
 	        case 0:
-	          obj.scale.set(3, 3, 3);
+	          obj.scale.set(5, 5, 5);
 	          break;
 
 	        case 1:
-	          obj.getObjectByName("Collada_visual_scene_group").scale.set(3, 3, 3);
+	          obj.getObjectByName("Collada_visual_scene_group").scale.set(5, 5, 5);
 	          break;
 
 	        case 2:
 	          obj = obj.getObjectByName('deo_body');
+	          obj.scale.set(2, 2, 2);
 	          break;
 	      } // if(index === 2) {
 	      //     let geo = obj;
@@ -56410,11 +56411,13 @@
 
 	        _mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 	        _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1); // while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 19) {
-	        //     mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-	        //     mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-	        //     mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-	        // }
+	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
+
+	        while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 25) {
+	          _mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	          _mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	          _mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+	        }
 
 	        _mesh.rotation.x = Math.random() * 2 * Math.PI;
 	        _mesh.rotation.y = Math.random() * 2 * Math.PI;
@@ -56439,7 +56442,13 @@
 	    shading: FlatShading
 	  });
 	  material.roughness = 0.8;
-	  loadModels(group);
+	  loadModels(group).then(function () {
+	    var loadingPage = document.querySelector('.loading-page');
+	    loadingPage.style.opacity = 0;
+	    setTimeout(function () {
+	      loadingPage.style.display = 'none';
+	    }, 500);
+	  });
 	  /*
 	  let loader = new GLTFLoader();
 	  let dracoLoader = new DRACOLoader();
@@ -56561,8 +56570,11 @@
 	  mouseY = event.clientY / window.innerHeight;
 	  var rx = Math.sin(mouseX) * 0.5;
 	  var ry = Math.cos(mouseY) * 0.5;
-	  group.rotation.x = rx;
-	  group.rotation.z = ry;
+
+	  if (group) {
+	    group.rotation.x = rx;
+	    group.rotation.z = ry;
+	  }
 	}
 
 	function animate() {

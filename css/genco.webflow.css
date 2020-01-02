@@ -144,7 +144,7 @@ a {
 }
 
 .mission-h1 {
-  color: #381962;
+  color: #fff;
 }
 
 .join-h1 {
@@ -204,6 +204,35 @@ a {
   color: #fff;
 }
 
+.loading-page {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 999;
+  display: none;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #323232;
+  opacity: 0;
+  -webkit-transition: opacity 500ms ease-in-out;
+  transition: opacity 500ms ease-in-out;
+}
+
+.image-2 {
+  width: 135px;
+  height: 135px;
+  -webkit-filter: contrast(200%);
+  filter: contrast(200%);
+}
+
 @media (max-width: 991px) {
   h1 {
     font-size: 30px;
@@ -222,6 +251,10 @@ a {
   .footer-text {
     font-size: 18px;
     line-height: 24px;
+  }
+  .image-2 {
+    width: 85px;
+    height: 85px;
   }
 }
 
@@ -298,6 +331,10 @@ a {
   .footer-text {
     font-size: 12px;
     line-height: 18px;
+  }
+  .image-2 {
+    width: 70px;
+    height: 70px;
   }
 }
 

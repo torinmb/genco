@@ -108,7 +108,7 @@ function loadModels(group) {
     for(let i = 0; i < 3; i++) {
         promises.push(loadGLTF(`obj${i}`));
     }
-    Promise.all(promises).then((data) => {
+    return Promise.all(promises).then((data) => {
         console.log('got resposne', data);
         data.forEach((gltf, index) => {
             // scene.add(gltf.scene);
@@ -134,13 +134,14 @@ function loadModels(group) {
             let obj = gltf.scene.children[0];
             switch (index) {
                 case 0:
-                    obj.scale.set(3, 3, 3);
+                    obj.scale.set(5, 5, 5);
                     break;
                 case 1:
-                    obj.getObjectByName("Collada_visual_scene_group").scale.set(3, 3, 3);
+                    obj.getObjectByName("Collada_visual_scene_group").scale.set(5, 5, 5);
                     break;
                 case 2:
                     obj = obj.getObjectByName('deo_body');
+                    obj.scale.set(2, 2, 2);;
                     break;
                 default:
                     break;
@@ -161,11 +162,11 @@ function loadModels(group) {
                 mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                 mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                 mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-                // while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 19) {
-                //     mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-                //     mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-                //     mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
-                // }
+                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 25) {
+                    mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                    mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                    mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
+                }
                 mesh.rotation.x = Math.random() * 2 * Math.PI;
                 mesh.rotation.y = Math.random() * 2 * Math.PI;
                 mesh.rotation.z = Math.random() * 2 * Math.PI;
@@ -184,7 +185,13 @@ function init() {
     let geometry = new THREE.IcosahedronBufferGeometry(10, 0);
     let material = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.2, shading: THREE.FlatShading });
     material.roughness = 0.8;
-    loadModels(group);
+    loadModels(group).then(() =>{
+        let loadingPage = document.querySelector('.loading-page');
+        loadingPage.style.opacity = 0;
+        setTimeout(() => {
+            loadingPage.style.display = 'none';
+        }, 500);
+    });
     /*
     let loader = new GLTFLoader();
     let dracoLoader = new DRACOLoader();
@@ -273,6 +280,9 @@ function init() {
     // plane.rotation.x = -0.5 * Math.PI;
     // plane.position.set(0, 0, 0);
     scene.add(plane);
+
+    
+
     // fetch('./images/logo.png').then(img => {
     //     // use the image, e.g. draw part of it on a canvas
     //     var canvas = document.createElement('canvas');
@@ -298,15 +308,15 @@ function onTouchMove(event) {
     mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
 }
 
-
 function onDocumentMouseMove(event) {
     mouseX = (event.clientX) / window.innerWidth;
     mouseY = (event.clientY) / window.innerHeight;
     let rx = Math.sin(mouseX ) * 0.5;
     let ry = Math.cos(mouseY ) * 0.5;
-
-    group.rotation.x = rx;
-    group.rotation.z = ry;
+    if(group) {
+        group.rotation.x = rx;
+        group.rotation.z = ry;    
+    }
 }
 
 function animate() {
