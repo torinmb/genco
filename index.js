@@ -119,9 +119,9 @@ function loadModels(group) {
             mesh.position.z = Math.random() * size - size / 2//* (Math.round(Math.random()) ? -1 : 1);
             mesh.updateMatrix();
             
-            let numBottles = 400;
+            let numBottles = 200;
             if (window.innerWidth < 500) {
-                numBottles = 200;
+                numBottles = 100;
             }
             
             // console.log('geo', geo);
@@ -162,7 +162,7 @@ function loadModels(group) {
                 mesh.position.x = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                 mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
                 mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
-                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 25) {
+                while (mesh.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 34) {
                     mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
                     mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
                     mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);

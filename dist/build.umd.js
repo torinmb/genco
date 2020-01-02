@@ -56367,10 +56367,10 @@
 	      mesh.position.z = Math.random() * size - size / 2; //* (Math.round(Math.random()) ? -1 : 1);
 
 	      mesh.updateMatrix();
-	      var numBottles = 400;
+	      var numBottles = 200;
 
 	      if (window.innerWidth < 500) {
-	        numBottles = 200;
+	        numBottles = 100;
 	      } // console.log('geo', geo);
 	      // geo.scale(0.5, 0.5, 0.5);
 	      // let material = new THREE.MeshNormalMaterial();
@@ -56413,7 +56413,7 @@
 	        _mesh.position.y = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 	        _mesh.position.z = Math.random() * 90 * (Math.round(Math.random()) ? -1 : 1);
 
-	        while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 25) {
+	        while (_mesh.position.distanceTo(new Vector3(0, 0, 0)) < 34) {
 	          _mesh.position.x = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
 	          _mesh.position.y = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
 	          _mesh.position.z = Math.random() * 20 * (Math.round(Math.random()) ? -1 : 1);
