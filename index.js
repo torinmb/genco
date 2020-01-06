@@ -141,7 +141,7 @@ function loadModels(group) {
                     break;
                 case 2:
                     obj = obj.getObjectByName('deo_body');
-                    obj.scale.set(3, 3, 3);;
+                    obj.scale.set(1.5, 1.5, 1.5);;
                     break;
                 default:
                     break;

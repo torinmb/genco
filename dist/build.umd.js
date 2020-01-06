@@ -56392,7 +56392,7 @@
 
 	        case 2:
 	          obj = obj.getObjectByName('deo_body');
-	          obj.scale.set(3, 3, 3);
+	          obj.scale.set(1.5, 1.5, 1.5);
 	          break;
 	      } // if(index === 2) {
 	      //     let geo = obj;
