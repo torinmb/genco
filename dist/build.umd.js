@@ -56525,7 +56525,7 @@
 
 	  if (window.innerWidth <= 500) {
 	    textOffset = -2;
-	    planeGeometry = new PlaneGeometry(32, 10, 1, 1);
+	    planeGeometry = new PlaneGeometry(25.9, 7, 1, 1);
 	  }
 
 	  console.log('planeGeom', planeGeometry);
@@ -56601,7 +56601,8 @@
 
 	function onWindowResize() {
 	  camera.aspect = window.innerWidth / window.innerHeight;
-	  camera.updateProjectionMatrix(); // composer.setSize(window.innerWidth, window.innerHeight)
+	  camera.updateProjectionMatrix();
+	  endOffset = document.querySelector('.end-intro').offsetTop - 500; // composer.setSize(window.innerWidth, window.innerHeight)
 
 	  renderer.setSize(window.innerWidth, window.innerHeight);
 	}

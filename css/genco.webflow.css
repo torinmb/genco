@@ -272,17 +272,36 @@ a {
   height: 100vh;
 }
 
-.join-genco-bottles {
+.full-screen-bg-image {
   position: absolute;
   left: -60px;
   top: 0%;
   right: -60px;
   bottom: 0%;
-  z-index: 1;
+  z-index: -1;
   background-image: url('../images/Group-8.png');
   background-position: 0px 0px;
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.full-screen-bg-image.refill-section {
+  background-image: url('../images/20.png');
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.full-screen-bg-image.bottle-0 {
+  background-image: url('../images/6-Landing-2.png');
+  background-position: 50% 50%;
+  background-size: contain;
+}
+
+.full-screen-bg-image.bottle-img {
+  background-image: url('../images/6-Landing-3.png');
+  background-position: 50% 50%;
+  background-size: contain;
+  transition: opacity 200ms ease-in-out;
 }
 
 .image-3 {
@@ -291,6 +310,8 @@ a {
   top: auto;
   right: 0%;
   bottom: 100px;
+  width: 60px;
+  height: 60px;
   -webkit-transform: translate(-50%, 0px);
   -ms-transform: translate(-50%, 0px);
   transform: translate(-50%, 0px);
@@ -298,8 +319,11 @@ a {
 
 @media (max-width: 991px) {
   h1 {
-    font-size: 30px;
+    font-size: 36px;
     line-height: 40px;
+  }
+  .section {
+    height: 70vh;
   }
   .form-block {
     display: block;
@@ -342,18 +366,34 @@ a {
     width: 85px;
     height: 85px;
   }
-  .join-genco-bottles {
+  .full-screen-bg-image {
     background-position: 50% 50%;
+  }
+  .image-3 {
+    height: 50px;
   }
 }
 
 @media (max-width: 767px) {
   h1 {
-    font-size: 20px;
+    font-size: 23px;
+  }
+  .section {
+    display: block;
+    height: 70vh;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+  .section.footer {
+    display: block;
   }
   .grid {
     padding-right: 0px;
     padding-left: 0px;
+  }
+  .footer-background {
+    padding-right: 20px;
+    padding-left: 20px;
   }
   .grid-2 {
     grid-template-areas: "left left" "right right" "logo logo";
@@ -363,17 +403,27 @@ a {
   .footer-text.right {
     text-align: left;
   }
-  .join-genco-bottles {
+  .intro-gradient {
+    left: -20px;
+    right: -20px;
+  }
+  .full-screen-bg-image {
+    left: -20px;
     top: 100px;
+    right: -20px;
+  }
+  .image-3 {
+    height: 40px;
   }
 }
 
 @media (max-width: 479px) {
   h1 {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 26px;
   }
   .section {
+    height: 45vh;
     margin-right: 10px;
     margin-left: 10px;
   }
@@ -438,10 +488,16 @@ a {
   .heading-2 {
     font-size: 17px;
   }
-  .join-genco-bottles {
+  .full-screen-bg-image {
     left: -10px;
     top: 20px;
     right: -10px;
+  }
+  .full-screen-bg-image.refill-section {
+    background-size: contain;
+  }
+  .image-3 {
+    bottom: 50px;
   }
 }
 

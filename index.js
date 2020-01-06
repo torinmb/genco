@@ -263,7 +263,7 @@ function init() {
     let planeGeometry = new THREE.PlaneGeometry(74, 20, 1, 1);
     if (window.innerWidth <= 500) {
         textOffset = -2;
-        planeGeometry = new THREE.PlaneGeometry(32, 10, 1, 1);
+        planeGeometry = new THREE.PlaneGeometry(25.9, 7, 1, 1);
     }
     console.log('planeGeom', planeGeometry)
     
@@ -369,6 +369,7 @@ function animateMeshes() {
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    endOffset = document.querySelector('.end-intro').offsetTop - 500;
     // composer.setSize(window.innerWidth, window.innerHeight)
     renderer.setSize(window.innerWidth, window.innerHeight);
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Thu Jan 02 2020 18:28:43 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Mon Jan 06 2020 18:23:40 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="5df1c238245d00810cb4437a" data-wf-site="5df1c238245d00ccadb44379">
 
 <head>
@@ -35,7 +35,7 @@
             class="container intro-container">
             <h1 data-w-id="f3a52765-66d6-5882-9152-2568fb9e6d6e" style="opacity:1" class="intro-title">U.S. college
                 students throw away half a billion plastic toiletry containers every year.</h1><img
-                src="images/np_scrolling_2058570_000000.svg" width="89" alt="" class="image-3">
+                src="images/np_scroll-down_581808_000000.svg" width="62" alt="" class="image-3">
         </div>
     </div>
     <div data-w-id="13d5d6f2-400f-6a3f-0f63-f1ac52b9c184" style="opacity:0" class="section">
@@ -49,12 +49,15 @@
     </div>
     <div class="section end-intro">
         <div class="container">
+            <div class="full-screen-bg-image bottle-img"></div>
+            <div class="full-screen-bg-image bottle-0"></div>
             <h1 id="reuse-title" class="heading reuse-title">You already reuse your water bottle.<br>Why not reuse your
                 <span class="reuse-item text-span">____________</span> bottle?<br></h1>
         </div>
     </div>
     <div data-w-id="9510863e-a0cd-8efc-bc55-0164a8b66088" class="section">
         <div class="container">
+            <div class="full-screen-bg-image refill-section"></div>
             <h1 class="mission-h1">We’re bringing refillable toiletries <br>to colleges across the country.<br></h1>
         </div>
     </div>
@@ -84,15 +87,15 @@
                     <div>Oops! Something went wrong while submitting the form.</div>
                 </div>
             </div>
-            <div class="join-genco-bottles"></div>
+            <div class="full-screen-bg-image"></div>
         </div>
     </div>
     <div class="section footer">
         <div class="footer-background">
             <div class="w-layout-grid grid-2"><img src="images/logo2-script-variant.png" width="400"
                     srcset="images/logo2-script-variant-p-500.png 500w, images/logo2-script-variant-p-800.png 800w, images/logo2-script-variant-p-1080.png 1080w, images/logo2-script-variant-p-1600.png 1600w, images/logo2-script-variant-p-2000.png 2000w, images/logo2-script-variant-p-2600.png 2600w, images/logo2-script-variant-p-3200.png 3200w, images/logo2-script-variant.png 6813w"
-                    sizes="(max-width: 479px) 84vw, (max-width: 767px) 75vw, 400.0000305175781px"
-                    id="w-node-266a53d3ab25-0cb4437a" alt="" class="image">
+                    sizes="(max-width: 479px) 84vw, 400.0000305175781px" id="w-node-266a53d3ab25-0cb4437a" alt=""
+                    class="image">
                 <p id="w-node-d8c7463fbd3a-0cb4437a" class="footer-text">Send us a message at <a
                         href="mailto:info@generationconscious.org?subject=Hello"
                         class="footer-email-link">info@generationconscious.org</a>.</p>
@@ -120,10 +123,30 @@
             'mouthwash'];
         let index = 0;
         let reuseTitle = document.querySelector('.reuse-item');
+        let bottleImg = document.querySelector('.bottle-img');
         setInterval(() => {
-            reuseTitle.innerText = bottleTypes[index];
+            // setTimeout(() => {
+                reuseTitle.innerText = bottleTypes[index];    
+            // }, 100);
+            
+            
+            bottleImg.style.opacity = 0;
+            setTimeout(() => {
+                // console.log(index, reuseTitle.innerText);
+                let bottleImgIndex = index -1;
+                bottleImgIndex = bottleImgIndex === bottleTypes.length - 1 ? 0 : bottleImgIndex;
+                if(bottleImgIndex === -1) {
+                    bottleImgIndex = 5;
+                }
+                // bottleImgIndex = bottleImgIndex === bottleTypes.length - 1 ? 0 : bottleImgIndex ;
+                
+                bottleImg.style.backgroundImage = `url(../images/bottle${bottleImgIndex}.png)`;
+                bottleImg.style.opacity = 1.0
+            }, 200);
             index = index === bottleTypes.length - 1 ? 0 : index + 1;
-        }, 2000);
+            // index = index % (bottleTypes.length -1);
+            
+        }, 1500);
     </script>
     <script src="./dist/build.umd.js"></script>
 </body>
