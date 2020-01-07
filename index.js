@@ -299,13 +299,16 @@ function lerp(v0, v1, t) {
 }
 
 function onTouchStart(event) {
-    mouseX = 0.5 * (event.touches[0].pageX + event.touches[1].pageX);
-    mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
+    if (!event.touches[0].pageX) return;
+    mouseX = 0.5 * (event.touches[0].pageX);
+    mouseY = 0.5 * (event.touches[0].pageY);
 }
 
 function onTouchMove(event) {
-    mouseX = 0.5 * (event.touches[0].pageX + event.touches[1].pageX);
-    mouseY = 0.5 * (event.touches[0].pageY + event.touches[1].pageY);
+
+    if (!event.touches[0].pageX) return;
+    mouseX = 0.5 * (event.touches[0].pageX);
+    mouseY = 0.5 * (event.touches[0].pageY);
 }
 
 function onDocumentMouseMove(event) {
