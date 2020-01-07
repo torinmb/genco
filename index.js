@@ -39,13 +39,13 @@ window.addEventListener('resize', onWindowResize, false);
 // renderer.domElement.addEventListener('touchmove', this.onTouchMove, false);
 container.appendChild(renderer.domElement);
 
-let controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping =  true;
-controls.dampingFactor =  0.25;
-controls.minDistance =  0.01;
-controls.zoomSpeed =  0.5;
-controls.rotateSpeed =  0.5;
-controls.enableZoom = false;
+// let controls = new OrbitControls(camera, renderer.domElement);
+// controls.enableDamping =  true;
+// controls.dampingFactor =  0.25;
+// controls.minDistance =  0.01;
+// controls.zoomSpeed =  0.5;
+// controls.rotateSpeed =  0.5;
+// controls.enableZoom = false;
 
 
 let endOffset = document.querySelector('.end-intro').offsetTop - 500;
@@ -73,7 +73,7 @@ document.addEventListener('scroll', (e) => {
     }
     camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
 }, false);
-window.controls = controls;
+// window.controls = controls;
 let mouseX = 0, mouseY = 0;
 
 
@@ -326,7 +326,7 @@ function animate() {
 
 function render() {
     let time = Date.now() * 0.001;
-    controls.update();
+    // controls.update();
     camera.lookAt(scene.position);
     // for (let i = 0; i < group.children.length; i++) {
     //     group.children[i].rotation.x += 0.01 * Math.random() - 0.01;

@@ -56281,14 +56281,14 @@
 	// renderer.domElement.addEventListener('touchend', this.onTouchEnd, false);
 	// renderer.domElement.addEventListener('touchmove', this.onTouchMove, false);
 
-	container.appendChild(renderer.domElement);
-	var controls = new OrbitControls(camera, renderer.domElement);
-	controls.enableDamping = true;
-	controls.dampingFactor = 0.25;
-	controls.minDistance = 0.01;
-	controls.zoomSpeed = 0.5;
-	controls.rotateSpeed = 0.5;
-	controls.enableZoom = false;
+	container.appendChild(renderer.domElement); // let controls = new OrbitControls(camera, renderer.domElement);
+	// controls.enableDamping =  true;
+	// controls.dampingFactor =  0.25;
+	// controls.minDistance =  0.01;
+	// controls.zoomSpeed =  0.5;
+	// controls.rotateSpeed =  0.5;
+	// controls.enableZoom = false;
+
 	var endOffset = document.querySelector('.end-intro').offsetTop - 500;
 	var textSelector = null;
 	var offsetPosition = .95;
@@ -56320,8 +56320,8 @@
 	  }
 
 	  camera.position.z = Math.max(initialCameraZ - initialCameraZ * currOffset, 3.2);
-	}, false);
-	window.controls = controls;
+	}, false); // window.controls = controls;
+
 	var mouseX = 0,
 	    mouseY = 0;
 	var group;
@@ -56583,7 +56583,7 @@
 	}
 
 	function render() {
-	  controls.update();
+
 	  camera.lookAt(scene.position); // for (let i = 0; i < group.children.length; i++) {
 	  //     group.children[i].rotation.x += 0.01 * Math.random() - 0.01;
 	  //     group.children[i].rotation.y += 0.01 * Math.random() - 0.01;

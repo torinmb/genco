@@ -291,9 +291,8 @@ a {
   background-size: contain;
 }
 
-.full-screen-bg-image.bottle-0 {
+.full-screen-bg-image.flower {
   background-image: url('../images/6-Landing-2.png');
-  background-position: 50% 50%;
   background-size: contain;
 }
 
@@ -301,6 +300,7 @@ a {
   background-image: url('../images/6-Landing-3.png');
   background-position: 50% 50%;
   background-size: contain;
+  -webkit-transition: opacity 200ms ease-in-out;
   transition: opacity 200ms ease-in-out;
 }
 
@@ -324,6 +324,9 @@ a {
   }
   .section {
     height: 70vh;
+  }
+  .section.intro-section {
+    height: 100vh;
   }
   .form-block {
     display: block;
@@ -427,6 +430,9 @@ a {
     margin-right: 10px;
     margin-left: 10px;
   }
+  .section.footer {
+    height: 300px;
+  }
   .text-field {
     height: 40px;
     padding-top: 1px;
@@ -490,7 +496,7 @@ a {
   }
   .full-screen-bg-image {
     left: -10px;
-    top: 20px;
+    top: 30px;
     right: -10px;
   }
   .full-screen-bg-image.refill-section {
@@ -498,6 +504,7 @@ a {
   }
   .image-3 {
     bottom: 50px;
+    height: 30px;
   }
 }
 
