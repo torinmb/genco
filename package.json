@@ -24,7 +24,7 @@
   "author": "Torin Blankensmith",
   "license": "Apache-2.0",
   "dependencies": {
-    "three": "^0.111.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
